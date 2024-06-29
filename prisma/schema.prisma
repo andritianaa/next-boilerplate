@@ -8,27 +8,26 @@ generator client {
     previewFeatures = ["prismaSchemaFolder"]
 }
 
-enum Privilege {
-    SU
-    REDACTOR
-    MODERATOR
-}
-
 model User {
-    id             Int       @id @default(autoincrement())
+    id             Int         @id @default(autoincrement())
     name           String?
-    email          String?   @unique
+    email          String?     @unique
     emailVerified  DateTime?
     image          String?
     accounts       Account[]
     sessions       Session[]
     hashedPassword String?
+    privileges     Privilege[]
 
     // Optional for WebAuthn support
     Authenticator Authenticator[]
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    PostComment PostComment[]
+    Post        Post[]
+    PostLike    PostLike[]
+    PostSeen    PostSeen[]
 }
 
 model Account {
@@ -86,4 +85,116 @@ model Authenticator {
     transports           String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Privilege {
+    SU
+    REDACTOR
+    MODERATOR
+}
+
+enum PostStatus {
+    archived
+    draf
+    online
+}
+
+model Post {
+    id           Int            @id @default(autoincrement())
+    authorId     Int
+    title        String
+    slug         String
+    summary      String
+    status       PostStatus
+    createdAt    DateTime       @default(now())
+    updatedAt    DateTime       @updatedAt
+    publishedAt  DateTime?
+    content      String
+    readTime     Int
+    imageUrl     String
+    author       User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    PostCategory PostCategory[]
+    PostTag      PostTag[]
+    PostLike     PostLike[]
+    PostSeen     PostSeen[]
+}
+
+model PostComment {
+    id        Int      @id @default(autoincrement())
+    parentId  Int?
+    authorId  Int
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    author        User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    parent        PostComment?  @relation(name: "CommentToParent", fields: [parentId], references: [id], onDelete: Cascade)
+    childComments PostComment[] @relation(name: "CommentToParent")
+}
+
+model Category {
+    id       Int    @id @default(autoincrement())
+    parentId Int?
+    title    String
+    slug     String
+    content  String
+
+    parent          Category?  @relation(name: "CategoryToParent", fields: [parentId], references: [id], onDelete: Cascade)
+    childCategories Category[] @relation(name: "CategoryToParent")
+
+    PostCategory PostCategory[]
+}
+
+model PostCategory {
+    postId     Int
+    categoryId Int
+
+    post     Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+    category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+    @@id([postId, categoryId])
+}
+
+model Tag {
+    id      Int       @id @default(autoincrement())
+    title   String
+    slug    String
+    content String
+    PostTag PostTag[]
+}
+
+model PostTag {
+    postId Int
+    tagId  Int
+
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+    tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+    @@id([postId, tagId])
+}
+
+model PostLike {
+    postId Int
+    userId Int
+
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([postId, userId])
+}
+
+model PostSeen {
+    postId Int
+    userId Int
+
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([postId, userId])
+}
+
+enum Slugable {
+    post
+    tag
+    category
 }

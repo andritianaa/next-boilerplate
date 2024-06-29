@@ -1,92 +1,89 @@
 "use client";
-import { useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "framer-motion";
-import Link from "next/link";
+import { ModeToggle } from "@/components/mode-toggle";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { Fingerprint } from "lucide-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Icons } from "@/components/ui/icons";
+import { siteConfig } from "@/config/site";
+import { usePathname } from "next/navigation";
 
-export const FloatingNav = ({
-  navItems,
-  className,
-}: {
-  navItems: {
-    name: string;
-    link: string;
-    icon?: JSX.Element;
-  }[];
-  className?: string;
-}) => {
-  const { scrollYProgress } = useScroll();
+export type NavBarProps = {};
 
-  const [visible, setVisible] = useState(true);
-
-  useMotionValueEvent(scrollYProgress, "change", (current) => {
-    if (typeof current === "number") {
-      let direction = current! - scrollYProgress.getPrevious()!;
-
-      if (scrollYProgress.get() < 0.05) {
-        setVisible(true);
-      } else {
-        if (direction < 0) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      }
-    }
-  });
+export const NavBar = (props: NavBarProps) => {
+  const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{
-          opacity: 1,
-          y: -100,
-        }}
-        animate={{
-          y: visible ? 0 : -100,
-          opacity: visible ? 1 : 0,
-        }}
-        transition={{
-          duration: 0.2,
-        }}
-        className={cn(
-          "flex w-full md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-0 border-t-0 inset-x-0 mx-auto px-10 py-3  border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] items-center justify-between space-x-4",
-          className
-        )}
-        style={{
-          backdropFilter: "blur(16px) saturate(180%)",
-          backgroundColor: "rgba(17, 25, 40, 0.75)",
-          border: "1px solid rgba(255, 255, 255, 0.125)",
-        }}
-      >
-        <Image src="/icon.png" alt="logo" width={48} height={48} />
-        <div className="flex items-center justify-center gap-8">
-          {navItems.map((navItem: any, idx: number) => (
+    <header
+      className={cn(
+        "supports-backdrop-blur:bg-background/90 top-0 z-40 w-full bg-background/40 backdrop-blur-lg fixed left-0"
+      )}
+    >
+      <div className="container flex h-16 items-center">
+        <div className="mr-4 flex">
+          <Link href="/" className="relative mr-6 flex items-center space-x-2">
+            <Icons.logo className="h-6 w-6" />
+            <span className="inline-block font-bold">{siteConfig.name}</span>
+            <Badge variant="secondary">Beta</Badge>
+          </Link>
+          <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
-              key={`link=${idx}`}
-              href={navItem.link}
+              href="/contact"
               className={cn(
-                "relative dark:text-neutral-50 items-center  flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
+                "flex items-center justify-center transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/contact")
+                  ? "text-foreground"
+                  : "text-foreground/60"
               )}
             >
-              <span className="block sm:hidden">{navItem.icon}</span>
-              {/* add !cursor-pointer */}
-              {/* remove hidden sm:block for the mobile responsive */}
-              <span className="!cursor-pointer text-sm">{navItem.name}</span>
+              Contact
             </Link>
-          ))}
+            <Link
+              href="/about"
+              className={cn(
+                "flex items-center justify-center transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/about")
+                  ? "text-foreground"
+                  : "text-foreground/60"
+              )}
+            >
+              About
+            </Link>
+            <Link
+              href="/blog"
+              className={cn(
+                "flex items-center justify-center transition-colors hover:text-foreground/80",
+                pathname?.startsWith("/blog")
+                  ? "text-foreground"
+                  : "text-foreground/60"
+              )}
+            >
+              Blog
+            </Link>
+          </nav>
         </div>
-        <button className="relative rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-black dark:border-white/[0.2] dark:text-white">
-          <span>Login</span>
-          <span className="absolute inset-x-0 -bottom-px mx-auto h-px w-1/2 bg-gradient-to-r from-transparent via-primary to-transparent" />
-        </button>
-      </motion.div>
-    </AnimatePresence>
+        <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
+          <nav className="flex items-center gap-1">
+            <ModeToggle />
+          </nav>
+          <Link
+            className={cn(
+              buttonVariants(),
+              " max-w-52 gap-2 overflow-hidden whitespace-pre md:flex",
+              "group relative w-full justify-center gap-2 rounded-md transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2"
+            )}
+            href="/authentication"
+          >
+            <span className="absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 transform bg-white opacity-10 transition-all duration-1000 ease-out group-hover:-translate-x-40" />
+            <div className="flex items-center">
+              <Fingerprint />
+              <span className="ml-1">Sign in</span>{" "}
+            </div>
+          </Link>
+        </div>
+      </div>
+      <hr className="m-0 h-px w-full border-none bg-gradient-to-r from-neutral-200/0 via-neutral-200/30 to-neutral-200/0" />
+    </header>
   );
 };

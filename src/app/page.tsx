@@ -1,23 +1,25 @@
 import Footer from "@/components/landing/Footer";
-import Grid from "@/components/landing/Grid";
+import { Grid } from "@/components/landing/Grid";
 import Hero from "@/components/landing/Hero";
-import { FloatingNav } from "@/components/common/NavBar";
+import { redirect } from "next/navigation";
+import { currentUser } from "@/lib/current-user";
+import { NavBar } from "@/components/common/NavBar";
+import { Notifications } from "@/components/landing/notifications";
 
-const navItems = [
-  { name: "About", link: "#about" },
-  { name: "Projects", link: "#projects" },
-  { name: "Contact", link: "#contact" },
-];
-
-export default function Home() {
-  return (
-    <main className="dark relative mx-auto flex flex-col items-center justify-center overflow-hidden bg-black-100 px-5 sm:px-10">
-      <div className="w-full max-w-7xl">
-        <FloatingNav navItems={navItems} />
-        <Hero />
-        <Grid />
-        <Footer />
-      </div>
-    </main>
-  );
+export default async function Home() {
+  const user = await currentUser();
+  if (!user) {
+    return (
+      <main className="bg-black-100 relative mx-auto flex flex-col items-center justify-center overflow-hidden px-5 sm:px-10">
+        <div className="w-full max-w-7xl">
+          <NavBar />
+          <Hero />
+          <Grid />
+          <Footer />
+        </div>
+      </main>
+    );
+  } else {
+    redirect("/u/dashboard");
+  }
 }

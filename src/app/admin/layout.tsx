@@ -4,10 +4,5 @@ import type { LayoutParams } from "@/types/next";
 import { notFound } from "next/navigation";
 
 export default async function RouteLayout(props: LayoutParams<{}>) {
-  const user = await currentUser();
-  if (user) {
-    return <AdminPanelLayout>{props.children}</AdminPanelLayout>;
-  } else {
-    notFound();
-  }
+  return <AdminPanelLayout>{props.children}</AdminPanelLayout>;
 }

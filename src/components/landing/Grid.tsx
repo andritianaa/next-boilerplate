@@ -1,92 +1,196 @@
-import { BentoGrid, BentoGridItem } from "./BentoGrid";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import AnimatedBeamMultipleOutputDemo from "@/components/landing/animated-beam-multiple-outputs";
+import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
+import Marquee from "@/components/magicui/marquee";
+import { CalendarIcon, FileTextIcon, InputIcon } from "@radix-ui/react-icons";
+import { Share2Icon } from "lucide-react";
+import { Notifications } from "@/components/landing/notifications";
+import { BorderBeam } from "@/components/magicui/border-beam";
 
-const gridItems = [
+const files = [
   {
-    id: 1,
-    title:
-      "Prioritize implementing important features rather than endless configuration",
-    description: "",
-    className: "lg:col-span-3 md:col-span-6 md:row-span-4 lg:min-h-[60vh]",
-    imgClassName: "w-full h-full",
-    titleClassName: "justify-end",
-    img: "/b1.svg",
-    spareImg: "",
+    name: "bitcoin.pdf",
+    body: "Bitcoin is a cryptocurrency invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto.",
   },
   {
-    id: 2,
-    title: "An i18n ready next.js boilerplate",
-    description: "",
-    className: "lg:col-span-2 md:col-span-3 md:row-span-2",
-    imgClassName: "",
-    titleClassName: "justify-start",
-    img: "",
-    spareImg: "",
+    name: "finances.xlsx",
+    body: "A spreadsheet or worksheet is a file made of rows and columns that help sort data, arrange data easily, and calculate numerical data.",
   },
   {
-    id: 3,
-    title: "Technical stack",
-    description: "Use the best stack for your SaaS",
-    className: "lg:col-span-2 md:col-span-3 md:row-span-2",
-    imgClassName: "",
-    titleClassName: "justify-center",
-    img: "",
-    spareImg: "",
+    name: "logo.svg",
+    body: "Scalable Vector Graphics is an Extensible Markup Language-based vector image format for two-dimensional graphics with support for interactivity and animation.",
   },
   {
-    id: 4,
-    title: "Tech enthusiast with a passion for development.",
-    description: "",
-    className: "lg:col-span-2 md:col-span-3 md:row-span-1",
-    imgClassName: "",
-    titleClassName: "justify-start",
-    img: "/grid.svg",
-    spareImg: "/b4.svg",
-  },
-
-  {
-    id: 5,
-    title:
-      "Prioritize implementing important features rather than endless configuration",
-    description: "The Inside Scoop",
-    className: "md:col-span-3 md:row-span-2",
-    imgClassName: "absolute right-0 bottom-0 md:w-96 w-60",
-    titleClassName: "justify-center md:justify-start lg:justify-center",
-    img: "/b5.svg",
-    spareImg: "/grid.svg",
+    name: "keys.gpg",
+    body: "GPG keys are used to encrypt and decrypt email, files, directories, and whole disk partitions and to authenticate messages.",
   },
   {
-    id: 6,
-    title: "Do you want to start a project together?",
-    description: "",
-    className: "lg:col-span-2 md:col-span-3 md:row-span-1",
-    imgClassName: "",
-    titleClassName: "justify-center md:max-w-full max-w-60 text-center",
-    img: "",
-    spareImg: "",
+    name: "seed.txt",
+    body: "A seed phrase, seed recovery phrase or backup seed phrase is a list of words which store all the information needed to recover Bitcoin funds on-chain.",
   },
 ];
-const Grid = () => {
-  return (
-    <section id="about">
-      <BentoGrid className="w-full py-20">
-        {gridItems.map((item, i) => (
-          <BentoGridItem
-            id={item.id}
-            key={i}
-            title={item.title}
-            description={item.description}
-            // remove icon prop
-            // remove original classname condition
-            className={item.className}
-            img={item.img}
-            imgClassName={item.imgClassName}
-            titleClassName={item.titleClassName}
-            spareImg={item.spareImg}
-          />
-        ))}
-      </BentoGrid>
-    </section>
-  );
-};
 
-export default Grid;
+interface Item {
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  time: string;
+}
+
+let notifications = [
+  {
+    name: "Payment received",
+    description: "Magic UI",
+    time: "15m ago",
+
+    icon: "💸",
+    color: "#00C9A7",
+  },
+  {
+    name: "User signed up",
+    description: "Magic UI",
+    time: "10m ago",
+    icon: "👤",
+    color: "#FFB800",
+  },
+  {
+    name: "New message",
+    description: "Magic UI",
+    time: "5m ago",
+    icon: "💬",
+    color: "#FF3D71",
+  },
+  {
+    name: "New event",
+    description: "Magic UI",
+    time: "2m ago",
+    icon: "🗞️",
+    color: "#1E86FF",
+  },
+];
+
+notifications = Array.from({ length: 10 }, () => notifications).flat();
+
+const features = [
+  {
+    Icon: FileTextIcon,
+    name: "Save your files",
+    description: "We automatically save your files as you type.",
+    href: "/",
+    cta: "Learn more",
+    className: "col-span-3 lg:col-span-1",
+    background: (
+      <Marquee
+        pauseOnHover
+        className="absolute top-10 [--duration:20s] [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]"
+      >
+        {files.map((f, idx) => (
+          <figure
+            key={idx}
+            className={cn(
+              "relative w-32 cursor-pointer overflow-hidden rounded-xl border p-4",
+              "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
+              "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
+              "transform-gpu blur-[1px] transition-all duration-300 ease-out hover:blur-none"
+            )}
+          >
+            <div className="flex flex-row items-center gap-2">
+              <div className="flex flex-col">
+                <figcaption className="text-sm font-medium dark:text-white">
+                  {f.name}
+                </figcaption>
+              </div>
+            </div>
+            <blockquote className="mt-2 text-xs">{f.body}</blockquote>
+          </figure>
+        ))}
+      </Marquee>
+    ),
+  },
+  {
+    Icon: InputIcon,
+    name: "Rich text editor",
+    description: "A WYSIWYG text editor like notion text editor",
+    href: "/",
+    cta: "Learn more",
+    className: "col-span-3 lg:col-span-2",
+    background: (
+      <div className="absolute right-0 top-10 h-full w-full origin-top rounded-md transition-all duration-300 ease-out group-hover:scale-105">
+        <div className="right-2 flex h-full w-full justify-end pr-2">
+          <div className="relative w-[70%] rounded-xl">
+            <img
+              src="/plate-dark.png"
+              alt="plate dark"
+              className="absolute right-0 rounded-[inherit] border opacity-0 dark:opacity-80"
+            />
+            <img
+              src="/plate-light.png"
+              alt="plate light"
+              className="absolute right-0 rounded-[inherit] border opacity-80 dark:opacity-0"
+            />
+            <BorderBeam size={350} duration={12} delay={9} />
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    Icon: Share2Icon,
+    name: "Integrations",
+    description: "Supports 100+ integrations and counting.",
+    href: "/",
+    cta: "Learn more",
+    className: "col-span-3 lg:col-span-1",
+    background: (
+      <AnimatedBeamMultipleOutputDemo className="absolute right-2 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+    ),
+  },
+  {
+    Icon: Share2Icon,
+    name: "Notifications",
+    description: "Supports 100+ integrations and counting.",
+    href: "/",
+    cta: "Learn more",
+    className: "col-span-3 lg:col-span-1",
+    background: (
+      <div className="absolute right-0 top-10 origin-top rounded-md transition-all duration-300 ease-out group-hover:scale-105">
+        <Notifications />
+      </div>
+    ),
+  },
+  {
+    Icon: CalendarIcon,
+    name: "Calendar",
+    description: "Use the calendar to filter your files by date.",
+    className: "col-span-3 lg:col-span-1",
+    href: "/",
+    cta: "Learn more",
+    background: (
+      <Calendar
+        mode="single"
+        selected={new Date(2022, 4, 11, 0, 0, 0)}
+        className="absolute right-0 top-10 origin-top rounded-md border transition-all duration-300 ease-out group-hover:scale-105"
+      />
+    ),
+  },
+];
+
+export function Grid() {
+  return (
+    <BentoGrid>
+      {features.map((feature, idx) => (
+        <BentoCard key={idx} {...feature} />
+      ))}
+    </BentoGrid>
+  );
+}

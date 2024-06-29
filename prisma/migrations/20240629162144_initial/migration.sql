@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Privilege" AS ENUM ('SU', 'REDACTOR', 'MODERATOR');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -6,6 +9,7 @@ CREATE TABLE "User" (
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "hashedPassword" TEXT,
+    "privileges" "Privilege"[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -67,6 +71,15 @@ CREATE TABLE "Authenticator" (
     "transports" TEXT,
 
     CONSTRAINT "Authenticator_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
