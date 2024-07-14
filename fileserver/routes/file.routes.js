@@ -24,7 +24,9 @@ const fileUpload = multer({
 
 FileRouter.post("/", fileUpload.array("files", 30), async function (req, res) {
   try {
-    if (!req.files || req.files.length === 0) throw new Error("Aucun fichier envoyé");
+    if (!req.files || req.files.length === 0) {
+      res.status(401).send("Aucun fichier envoyé");
+    }
     const uploadedFiles = req.files.map(file => file.filename);
     console.log(uploadedFiles);
     res.json(uploadedFiles);

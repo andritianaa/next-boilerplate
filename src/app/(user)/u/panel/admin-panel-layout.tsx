@@ -5,11 +5,12 @@ import { useStore } from "@/hooks/use-store";
 import { Footer } from "./footer";
 import { Sidebar } from "./sidebar";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
+import {ReactNode} from "react";
 
 export default function AdminPanelLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
 

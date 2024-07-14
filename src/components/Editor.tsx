@@ -139,7 +139,6 @@ import { MentionInputElement } from "@/components/plate-ui/mention-input-element
 import { ParagraphElement } from "@/components/plate-ui/paragraph-element";
 import { TableElement } from "@/components/plate-ui/table-element";
 import { TableRowElement } from "@/components/plate-ui/table-row-element";
-import { AlignDropdownMenu } from "@/components/plate-ui/align-dropdown-menu";
 import {
   TableCellElement,
   TableCellHeaderElement,
@@ -157,7 +156,6 @@ import { FloatingToolbar } from "@/components/plate-ui/floating-toolbar";
 import { FloatingToolbarButtons } from "@/components/plate-ui/floating-toolbar-buttons";
 import { withPlaceholders } from "@/components/plate-ui/placeholder";
 import { withDraggables } from "@/components/plate-ui/with-draggables";
-import { EmojiInputElement } from "@/components/plate-ui/emoji-input-element";
 import { TooltipProvider } from "@/components/plate-ui/tooltip";
 import { useState } from "react";
 

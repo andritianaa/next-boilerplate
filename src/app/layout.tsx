@@ -3,8 +3,8 @@ import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 import { metadata as meta } from "@/lib/metadata";
-import { cn } from "@/lib/utils";
 import { Providers } from "@/providers";
+import { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +13,7 @@ export const metadata = meta;
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>

@@ -25,9 +25,25 @@ export const TagSchema = z.object({
 });
 
 export const CategorySchema = z.object({
-  title: z.string().min(2).max(32),
-  content: z.string().min(2).max(256),
-  slug: z.string().min(2).max(32),
+  title: z
+    .string()
+    .nonempty({ message: "Title is required" })
+    .min(2, { message: "Title must be at least 2 characters" })
+    .max(32, { message: "Title must be at most 32 characters" }),
+
+  content: z
+    .string()
+    .nonempty({ message: "Content is required" })
+    .min(2, { message: "Content must be at least 2 characters" })
+    .max(256, { message: "Content must be at most 256 characters" }),
+  slug: z
+    .string()
+    .nonempty({ message: "Slug is required" })
+    .regex(/^[a-zA-Z0-9_-]*$/, {
+      message: "Slug only allow alphanumeric characters with - and _",
+    })
+    .min(2, { message: "Slug must be at least 2 characters" })
+    .max(32, { message: "Slug must be at most 32 characters" }),
   parentId: z.number().nullable(),
 });
 

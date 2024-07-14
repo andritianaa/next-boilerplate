@@ -6,8 +6,6 @@ import {
   useToggleToolbarButtonState,
 } from "@udecode/plate-toggle";
 
-import { Icons } from "@/components/plate-ui/icons";
-
 import { ToolbarButton } from "./toolbar";
 import { ChevronDown } from "lucide-react";
 

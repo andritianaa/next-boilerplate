@@ -9,9 +9,6 @@ import {
   type ClassNames,
   type PlateElementProps,
   type TEditor,
-  type TElement,
-  useEditorRef,
-  useElement,
 } from "@udecode/plate-common";
 import {
   type DragItemNode,
@@ -78,8 +75,6 @@ export interface DraggableProps
 }
 
 const DragHandle = () => {
-  const editor = useEditorRef();
-  const element = useElement<TElement>();
 
   return (
     <Tooltip>

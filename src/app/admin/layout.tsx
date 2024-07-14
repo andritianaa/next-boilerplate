@@ -1,8 +1,20 @@
+"use client";
 import AdminPanelLayout from "./panel/admin-panel-layout";
-import { currentUser } from "@/lib/current-user";
 import type { LayoutParams } from "@/types/next";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
+import {fetcher} from "@/lib/utils";
+import useSWR from "swr";
 
-export default async function RouteLayout(props: LayoutParams<{}>) {
-  return <AdminPanelLayout>{props.children}</AdminPanelLayout>;
+export default  function RouteLayout(props: LayoutParams) {
+  const {data: user, isLoading} = useSWR("/api/user/current", fetcher);
+
+
+  if (!user && !isLoading) {
+    return redirect("/authentication");
+  }
+  if(user){
+    return <AdminPanelLayout>{props.children}</AdminPanelLayout>;
+
+  }
+
 }

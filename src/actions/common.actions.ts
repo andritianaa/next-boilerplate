@@ -22,3 +22,23 @@ export const verifySlugUniqueness = async (
     throw new ActionError("Slug already exists");
   }
 };
+
+export const verifyUniqueness = async (
+  title: string,
+  objectName: string,
+  id?: number
+) => {
+  const titleExists = await prisma[objectName].findFirst({
+    where: {
+      title: title,
+      id: id
+        ? {
+            not: id,
+          }
+        : undefined,
+    },
+  });
+  if (titleExists) {
+    throw new ActionError("Title already exists");
+  }
+};

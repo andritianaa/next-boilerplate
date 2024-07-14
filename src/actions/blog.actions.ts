@@ -1,7 +1,7 @@
 "use server";
 
-import { verifySlugUniqueness } from "@/actions/common.actions";
-import { ActionError, redactorAction } from "@/lib/safe-actions";
+import {verifySlugUniqueness, verifyUniqueness} from "@/actions/common.actions";
+import { redactorAction } from "@/lib/safe-actions";
 import { generateSlug } from "@/lib/utils";
 import { prisma } from "@/prisma";
 import {
@@ -21,6 +21,7 @@ export const createTag = redactorAction(
   async (input: TagType, context) => {
     input.slug = generateSlug(input.title);
     await verifySlugUniqueness(input.slug, "tag");
+    await verifyUniqueness(input.slug, "tag");
     return (await prisma.tag.create({ data: { ...input } })).slug;
   }
 );

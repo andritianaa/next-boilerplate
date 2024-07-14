@@ -1,11 +1,10 @@
 "use client";
 
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { BsGithub, BsGoogle } from "react-icons/bs";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -25,16 +24,9 @@ import { loginSchema, registerSchema } from "./validationSchema";
 type Variant = "LOGIN" | "REGISTER";
 
 export const AuthForm = () => {
-  const session = useSession();
   const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (session?.status === "authenticated") {
-      router.push("/u/account");
-    }
-  }, [session?.status, router]);
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -99,7 +91,6 @@ export const AuthForm = () => {
   };
 
   return (
-    <>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">
@@ -174,6 +165,5 @@ export const AuthForm = () => {
           </div>
         </CardContent>
       </Card>
-    </>
   );
 };

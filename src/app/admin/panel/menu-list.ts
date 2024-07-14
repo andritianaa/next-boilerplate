@@ -1,8 +1,6 @@
 import {
-  Tag,
   Users,
   Settings,
-  Bookmark,
   SquarePen,
   LayoutGrid,
 } from "lucide-react";
@@ -32,9 +30,9 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "",
       menus: [
         {
-          href: "/admin/dashboard",
+          href: "/admin",
           label: "Dashboard",
-          active: pathname.includes("/admin/dashboard"),
+          active: pathname == "/admin",
           icon: LayoutGrid,
           submenus: [],
         },
@@ -44,36 +42,32 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Contents",
       menus: [
         {
-          href: "/u",
+          href: "/",
           label: "Posts",
-          active: pathname.includes("/admin/posts"),
+          active: pathname.includes("/admin/post"),
           icon: SquarePen,
           submenus: [
             {
-              href: "/admin/posts",
+              href: "/admin/post",
               label: "All Posts",
-              active: pathname === "/posts",
+              active: pathname === "/post",
             },
             {
-              href: "/admin/posts/new",
+              href: "/admin/post/new",
               label: "New Post",
-              active: pathname === "/posts/new",
+              active: pathname === "/post/new",
+            },
+            {
+              href: "/admin/post/categories",
+              label: "Categories",
+              active: pathname.includes("/admin/post/categories"),
+            },
+            {
+              href: "/admin/post/tags",
+              label: "Tags",
+              active: pathname.includes("/admin/post/tags"),
             },
           ],
-        },
-        {
-          href: "/admin/categories",
-          label: "Categories",
-          active: pathname.includes("/admin/categories"),
-          icon: Bookmark,
-          submenus: [],
-        },
-        {
-          href: "/admin/tags",
-          label: "Tags",
-          active: pathname.includes("/admin/tags"),
-          icon: Tag,
-          submenus: [],
         },
       ],
     },

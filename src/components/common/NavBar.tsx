@@ -9,9 +9,7 @@ import { Icons } from "@/components/ui/icons";
 import { siteConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
 
-export type NavBarProps = {};
-
-export const NavBar = (props: NavBarProps) => {
+export const NavBar = () => {
   const pathname = usePathname();
 
   return (
